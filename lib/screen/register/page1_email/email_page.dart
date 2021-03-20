@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mini_register/component/my_button.dart';
 import 'package:flutter_mini_register/component/my_text_field.dart';
 import 'package:flutter_mini_register/component/template/register_stepper.dart';
+import 'package:flutter_mini_register/helper/navigation/navigate.dart';
+import 'package:flutter_mini_register/logic/register/email.dart';
 
 class EmailPage extends StatefulWidget {
   EmailPage({Key? key}) : super(key: key);
@@ -11,6 +13,11 @@ class EmailPage extends StatefulWidget {
 }
 
 class _EmailPageState extends State<EmailPage> {
+  var _logic = EmailLogic();
+  var _emailController = TextEditingController();
+  var _emailTextFieldKey = GlobalKey<FormState>();
+  var _autoValidate = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,8 +46,13 @@ class _EmailPageState extends State<EmailPage> {
                 _welcomeText,
                 SizedBox(height: 28),
                 MyTextField(
+                  formKey: _emailTextFieldKey,
                   prefixIcon: Icons.email_outlined,
+                  controller: _emailController,
                   hintText: "Email",
+                  inputType: TextInputType.emailAddress,
+                  autoValidate: _autoValidate,
+                  validator: _logic.emailValidator,
                 ),
               ],
             ),
@@ -81,7 +93,7 @@ class _EmailPageState extends State<EmailPage> {
 
   Widget _welcomeText = Text(
     "Welcome to The Bank of The Future.\n"
-    "Manage and track your accounts on the go.",
+        "Manage and track your accounts on the go.",
     style: TextStyle(
       fontSize: 16,
       color: Colors.black,
@@ -93,9 +105,23 @@ class _EmailPageState extends State<EmailPage> {
     return MyButton(
       text: 'Next',
       onPressed: () {
-        //TODO: open next page
-        FocusScope.of(context).unfocus();
+        var isValid = _emailTextFieldKey.currentState?.validate() ?? false;
+        if (!isValid) {
+          setState(() {
+            _autoValidate = true;
+          });
+          return;
+        }
+
+        var email = _emailController.value.text;
+        Navigate(context).toRegisterPage2Password(email);
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
   }
 }
