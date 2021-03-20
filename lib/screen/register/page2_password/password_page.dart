@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PasswordPage extends StatefulWidget {
-  PasswordPage({Key key}) : super(key: key);
+  PasswordPage({Key? key}) : super(key: key);
 
   @override
   _PasswordPageState createState() => _PasswordPageState();

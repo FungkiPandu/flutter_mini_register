@@ -7,13 +7,12 @@ class MyStepper extends StatelessWidget {
   final double fontSize;
 
   const MyStepper({
-    Key key,
-    @required this.stepCount,
+    Key? key,
+    required this.stepCount,
     this.currentStep = 1,
     this.paddingSize = 8,
     this.fontSize = 12,
-  })  : assert(stepCount != null),
-        assert(currentStep > 0 && currentStep <= stepCount),
+  })  : assert(currentStep > 0 && currentStep <= stepCount),
         super(key: key);
 
   @override
