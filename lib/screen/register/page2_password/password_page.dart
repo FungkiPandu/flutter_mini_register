@@ -5,6 +5,7 @@ import 'package:flutter_mini_register/component/my_text.dart';
 import 'package:flutter_mini_register/component/my_text_field.dart';
 import 'package:flutter_mini_register/component/template/register_stepper.dart';
 import 'package:flutter_mini_register/helper/navigation/navigate.dart';
+import 'package:flutter_mini_register/logic/register/password.dart';
 
 class PasswordPage extends StatefulWidget {
   final String email;
@@ -16,10 +17,10 @@ class PasswordPage extends StatefulWidget {
 }
 
 class _PasswordPageState extends State<PasswordPage> {
+  var _logic = PasswordLogic();
   var _controller = TextEditingController();
   String _complexityStatus = "";
   Color _complexityStatusColor = Colors.red;
-  int _complexityPoint = 0;
   bool _isLowerCase = false;
   bool _isUpperCase = false;
   bool _isNumber = false;
@@ -86,12 +87,12 @@ class _PasswordPageState extends State<PasswordPage> {
       text: "Next",
       color: Theme.of(context).primaryColorDark,
       onPressed: () {
-        if (_complexityPoint < 3) {
+        if (!_logic.isValidPassword(_controller.text)) {
           showMyDialog(
               context: context,
               builder: (context) => MyAlertDialog(
                     title: "Sorry",
-                    content: "Please create a Strong or more complex password.",
+                    content: "Please create Strong password.",
                     actions: [
                       MyAlertDialogButton(
                         text: "OK",
@@ -163,11 +164,7 @@ class _PasswordPageState extends State<PasswordPage> {
   void _calculateStatus() {
     var status = "";
     Color color = Colors.red;
-    var point = 0;
-    if (_isLowerCase) point++; // very weak
-    if (_isUpperCase) point++; // weak
-    if (_isNumber) point++; // strong
-    if (_isCharacters) point++; // very strong
+    var point = _logic.calculatePasswordPoint(_controller.text);
 
     switch (point) {
       case 1:
@@ -179,17 +176,16 @@ class _PasswordPageState extends State<PasswordPage> {
         color = Colors.orangeAccent;
         break;
       case 3:
-        status = "Strong";
-        color = Colors.lightGreenAccent;
+        status = "Good";
+        color = Colors.yellow;
         break;
       case 4:
-        status = "Very Strong";
+        status = "Strong";
         color = Colors.green;
         break;
     }
 
     setState(() {
-      _complexityPoint = point;
       _complexityStatus = status;
       _complexityStatusColor = color;
     });
@@ -197,10 +193,10 @@ class _PasswordPageState extends State<PasswordPage> {
 
   void _onTextChange(String text) {
     setState(() {
-      _isLowerCase = text.contains(RegExp(r"[a-z]"));
-      _isUpperCase = text.contains(RegExp(r"[A-Z]"));
-      _isNumber = text.contains(RegExp(r"[0-9]"));
-      _isCharacters = text.length >= 8;
+      _isLowerCase = _logic.isContainLowerCase(text);
+      _isUpperCase = _logic.isContainUpperCase(text);
+      _isNumber = _logic.isContainNumber(text);
+      _isCharacters = _logic.isLast8(text);
     });
     _calculateStatus();
   }
