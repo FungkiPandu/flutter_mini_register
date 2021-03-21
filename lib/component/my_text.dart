@@ -7,6 +7,7 @@ class MyText extends StatelessWidget {
   final Color color;
   final MyTextType type;
   final FontWeight? fontWeight;
+  final TextAlign? textAlign;
 
   const MyText(
     this.text, {
@@ -14,12 +15,14 @@ class MyText extends StatelessWidget {
     this.color = Colors.black,
     this.type = MyTextType.body,
     this.fontWeight,
+    this.textAlign,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
+      textAlign: textAlign,
       style: typeStyle(
         type,
         color: color,

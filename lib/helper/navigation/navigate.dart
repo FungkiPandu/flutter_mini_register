@@ -5,6 +5,7 @@ import 'package:flutter_mini_register/screen/register/page2_password/password_pa
 import 'package:flutter_mini_register/screen/register/page3_personal_info/personal_info_page.dart';
 import 'package:flutter_mini_register/screen/register/page4_schedule_vidcall/schedule_vidcall_page.dart';
 import 'package:flutter_mini_register/screen/register/register_confirmation_page.dart';
+import 'package:flutter_mini_register/screen/register/register_success_page.dart';
 
 class Navigate {
   final BuildContext context;
@@ -60,6 +61,15 @@ class Navigate {
           scheduleVidCall: schedule,
         ),
       ),
+    );
+  }
+
+  Future<dynamic> toRegisterSuccessPage() {
+    return Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(
+        builder: (context) => RegisterSuccessPage(),
+      ),
+      (Route<dynamic> route) => false,
     );
   }
 }

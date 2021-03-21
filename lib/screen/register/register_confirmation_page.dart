@@ -1,8 +1,12 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mini_register/component/my_button.dart';
 import 'package:flutter_mini_register/component/my_text.dart';
 import 'package:flutter_mini_register/component/template/register_stepper.dart';
 import 'package:flutter_mini_register/helper/datetime.dart';
+import 'package:flutter_mini_register/helper/navigation/navigate.dart';
 
 class RegisterConfirmationPage extends StatefulWidget {
   final String email;
@@ -154,7 +158,25 @@ class _RegisterConfirmationPageState extends State<RegisterConfirmationPage> {
     return MyButton(
       text: "Activate",
       color: Theme.of(context).primaryColorDark,
-      onPressed: () {},
+      onPressed: () {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) {
+            if (Platform.isIOS) {
+              return CupertinoActivityIndicator();
+            }
+            return Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+            );
+          },
+        );
+        Future.delayed(Duration(seconds: 2)).then((_) {
+          Navigate(context).toRegisterSuccessPage();
+        });
+      },
     );
   }
 }
