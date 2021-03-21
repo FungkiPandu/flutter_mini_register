@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mini_register/component/my_button.dart';
+import 'package:flutter_mini_register/component/my_date_picker.dart';
 import 'package:flutter_mini_register/component/my_text.dart';
+import 'package:flutter_mini_register/component/my_time_picker.dart';
 import 'package:flutter_mini_register/component/template/register_stepper.dart';
 
 class ScheduleVidCallPage extends StatefulWidget {
@@ -27,6 +29,9 @@ class _ScheduleVidCallPageState extends State<ScheduleVidCallPage>
     with SingleTickerProviderStateMixin {
   late Animation<double> _animation;
   late AnimationController _controller;
+
+  DateTime? _selectedDate;
+  DateTime? _selectedTime;
 
   @override
   void initState() {
@@ -106,6 +111,25 @@ class _ScheduleVidCallPageState extends State<ScheduleVidCallPage>
               color: Colors.white,
             ),
             SizedBox(height: 24),
+            MyDatePicker(
+              caption: "Date",
+              currentDateTime: _selectedDate,
+              onDateTimeChanged: (dateTime) {
+                setState(() {
+                  _selectedDate = dateTime;
+                });
+              },
+            ),
+            SizedBox(height: 24),
+            MyTimePicker(
+              caption: "Time",
+              currentDateTime: _selectedTime,
+              onDateTimeChanged: (dateTime) {
+                setState(() {
+                  _selectedTime = dateTime;
+                });
+              },
+            ),
           ],
         ),
       ),
