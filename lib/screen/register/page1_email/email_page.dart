@@ -28,7 +28,10 @@ class _EmailPageState extends State<EmailPage> {
     );
   }
 
-  Widget _header() => RegisterStepper(currentStep: 1);
+  Widget _header() => Hero(
+        tag: "stepper",
+        child: RegisterStepper(currentStep: 1),
+      );
 
   Widget _body() {
     return Expanded(
@@ -93,7 +96,7 @@ class _EmailPageState extends State<EmailPage> {
 
   Widget _welcomeText = Text(
     "Welcome to The Bank of The Future.\n"
-        "Manage and track your accounts on the go.",
+    "Manage and track your accounts on the go.",
     style: TextStyle(
       fontSize: 16,
       color: Colors.black,
