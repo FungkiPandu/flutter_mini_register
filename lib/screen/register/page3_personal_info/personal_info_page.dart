@@ -174,7 +174,13 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
           showErrorDialog("Please choose your monthly expanse");
           return;
         }
-        // todo: navigate to next page
+        Navigate(context).toRegisterPage4ScheduleVidCall(
+          widget.email,
+          widget.password,
+          goal!,
+          income!,
+          expanse!,
+        );
       },
     );
   }
