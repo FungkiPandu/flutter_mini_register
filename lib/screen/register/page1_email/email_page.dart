@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mini_register/component/my_button.dart';
+import 'package:flutter_mini_register/component/my_text.dart';
 import 'package:flutter_mini_register/component/my_text_field.dart';
 import 'package:flutter_mini_register/component/template/register_stepper.dart';
 import 'package:flutter_mini_register/helper/navigation/navigate.dart';
@@ -68,40 +69,30 @@ class _EmailPageState extends State<EmailPage> {
 
   List<Widget> _welcomeHeaders() {
     return [
-      Text(
+      MyText(
         "Welcome to",
-        style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+        type: MyTextType.h2,
       ),
       Text.rich(
         TextSpan(
-          style: TextStyle(fontSize: 42, fontWeight: FontWeight.bold),
+          style: MyText.typeStyle(MyTextType.h1),
           children: [
-            TextSpan(
-              text: 'Bank ',
-              style: TextStyle(color: Colors.black),
-            ),
+            TextSpan(text: 'Bank '),
             TextSpan(
               text: 'JAGO',
               style: TextStyle(color: Theme.of(context).primaryColor),
             ),
-            TextSpan(
-              text: '!',
-              style: TextStyle(color: Colors.black),
-            ),
+            TextSpan(text: '!'),
           ],
         ),
       ),
     ];
   }
 
-  Widget _welcomeText = Text(
+  Widget _welcomeText = MyText(
     "Welcome to The Bank of The Future.\n"
     "Manage and track your accounts on the go.",
-    style: TextStyle(
-      fontSize: 16,
-      color: Colors.black,
-      fontWeight: FontWeight.w600,
-    ),
+    type: MyTextType.title,
   );
 
   Widget _nextButton() {
