@@ -65,6 +65,8 @@ class MyDatePicker extends StatelessWidget {
               child: CupertinoDatePicker(
                 mode: CupertinoDatePickerMode.date,
                 onDateTimeChanged: onDateTimeChanged,
+                initialDateTime: currentDateTime,
+                minimumDate: DateTime.now().add(Duration(days: 1)),
               ),
               color: Colors.white,
             ),
@@ -100,7 +102,7 @@ class MyDatePicker extends StatelessWidget {
         ),
       ),
       onTap: () {
-        var now = DateTime.now();
+        var now = DateTime.now().add(Duration(days: 1));
         showDatePicker(
           context: context,
           initialDate: currentDateTime ?? now,
