@@ -54,7 +54,7 @@ class MyTimePicker extends StatelessWidget {
       padding: EdgeInsets.only(left: 16, right: 8),
       child: CupertinoDialogAction(
         child: Text(currentDateTime != null
-            ? DateTimeHelper(currentDateTime!).formattedDate
+            ? DateTimeHelper(currentDateTime!).formattedTime
             : "- Chose Date -"),
         textStyle: MyText.typeStyle(MyTextType.title),
         onPressed: () {
