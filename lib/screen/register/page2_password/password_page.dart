@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mini_register/component/MyAlertDialog.dart';
+import 'package:flutter_mini_register/component/my_alert_dialog.dart';
 import 'package:flutter_mini_register/component/my_button.dart';
 import 'package:flutter_mini_register/component/my_text.dart';
 import 'package:flutter_mini_register/component/my_text_field.dart';
