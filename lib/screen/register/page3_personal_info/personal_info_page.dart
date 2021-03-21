@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mini_register/component/my_alert_dialog.dart';
 import 'package:flutter_mini_register/component/my_button.dart';
 import 'package:flutter_mini_register/component/my_drop_down.dart';
 import 'package:flutter_mini_register/component/my_text.dart';
 import 'package:flutter_mini_register/component/template/register_stepper.dart';
+import 'package:flutter_mini_register/helper/navigation/navigate.dart';
+import 'package:flutter_mini_register/logic/register/personal_info.dart';
 
 class PersonalInfoPage extends StatefulWidget {
   final String email;
@@ -19,6 +22,8 @@ class PersonalInfoPage extends StatefulWidget {
 }
 
 class _PersonalInfoPageState extends State<PersonalInfoPage> {
+  var _logic = PersonalInfoLogic();
+
   List<String> goalOptions = [
     "Invest",
     "Saving",
@@ -145,7 +150,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
       currentValue: expanse,
       caption: "Choose your monthly expanse",
       onChanged: (item) {
-        print(item);
         setState(() {
           expanse = item;
         });
@@ -158,8 +162,37 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
       text: "Next",
       color: Theme.of(context).primaryColorDark,
       onPressed: () {
-        // todo: create validation + navigate to next page
+        if (!_logic.isValidGoal(goal)) {
+          showErrorDialog("Please choose your goal for activation");
+          return;
+        }
+        if (!_logic.isValidIncome(income)) {
+          showErrorDialog("Please choose your monthly income");
+          return;
+        }
+        if (!_logic.isValidExpanse(expanse)) {
+          showErrorDialog("Please choose your monthly expanse");
+          return;
+        }
+        // todo: navigate to next page
       },
+    );
+  }
+
+  void showErrorDialog(String message) {
+    showMyDialog(
+      context: context,
+      builder: (context) => MyAlertDialog(
+        title: "Sorry",
+        content: message,
+        actions: [
+          MyAlertDialogButton(
+            text: "OK",
+            isDefaultAction: true,
+            onPressed: Navigate(context).pop,
+          ),
+        ],
+      ),
     );
   }
 }
