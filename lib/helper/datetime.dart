@@ -53,17 +53,17 @@ class DateTimeHelper {
     return months[date.month - 1];
   }
 
-  static toDateTime(TimeOfDay time) {
+  static DateTime toDateTime(TimeOfDay time) {
     final now = new DateTime.now();
     return new DateTime(now.year, now.month, now.day, time.hour, time.minute);
   }
 
-  static bindDateAndTime(DateTime date, TimeOfDay time) {
+  static DateTime bindDateAndTime(DateTime date, TimeOfDay time) {
     return new DateTime(
         date.year, date.month, date.day, time.hour, time.minute);
   }
 
-  static bindDateTime(DateTime date, DateTime time) {
+  static DateTime bindDateTime(DateTime date, DateTime time) {
     return new DateTime(
         date.year, date.month, date.day, time.hour, time.minute);
   }

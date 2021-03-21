@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mini_register/component/my_alert_dialog.dart';
 import 'package:flutter_mini_register/component/my_button.dart';
 import 'package:flutter_mini_register/component/my_date_picker.dart';
 import 'package:flutter_mini_register/component/my_text.dart';
 import 'package:flutter_mini_register/component/my_time_picker.dart';
 import 'package:flutter_mini_register/component/template/register_stepper.dart';
+import 'package:flutter_mini_register/helper/navigation/navigate.dart';
+import 'package:flutter_mini_register/logic/register/schedule_vidcall.dart';
 
 class ScheduleVidCallPage extends StatefulWidget {
   final String email;
@@ -27,6 +30,8 @@ class ScheduleVidCallPage extends StatefulWidget {
 
 class _ScheduleVidCallPageState extends State<ScheduleVidCallPage>
     with SingleTickerProviderStateMixin {
+  var _logic = ScheduleVidCallLogic();
+
   late Animation<double> _animation;
   late AnimationController _controller;
 
@@ -105,8 +110,8 @@ class _ScheduleVidCallPageState extends State<ScheduleVidCallPage>
             SizedBox(height: 8),
             MyText(
               "Choose the date and time that you preferred, we will send a "
-              "link via email to make a video call on the scheduled date "
-              "and time",
+                  "link via email to make a video call on the scheduled date "
+                  "and time",
               type: MyTextType.body,
               color: Colors.white,
             ),
@@ -140,7 +145,38 @@ class _ScheduleVidCallPageState extends State<ScheduleVidCallPage>
     return MyButton(
       text: "Next",
       color: Theme.of(context).primaryColorDark,
-      onPressed: () {},
+      onPressed: () {
+        // validate date and time
+        if (!_logic.isDateValid(_selectedDate)) {
+          _showErrorDialog("Please choose date first");
+          return;
+        }
+        if (!_logic.isTimeValid(_selectedTime)) {
+          _showErrorDialog("Please choose time first");
+          return;
+        }
+        if (!_logic.isDateAndTimeValid(_selectedDate, _selectedTime)) {
+          _showErrorDialog("Please choose date and time more than now");
+          return;
+        }
+      },
+    );
+  }
+
+  void _showErrorDialog(String message) {
+    showMyDialog(
+      context: context,
+      builder: (context) => MyAlertDialog(
+        title: "Sorry",
+        content: message,
+        actions: [
+          MyAlertDialogButton(
+            text: "OK",
+            isDefaultAction: true,
+            onPressed: Navigate(context).pop,
+          ),
+        ],
+      ),
     );
   }
 
