@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_mini_register/screen/register/page2_password/password_page.dart';
 import 'package:flutter_mini_register/screen/register/page3_personal_info/personal_info_page.dart';
 import 'package:flutter_mini_register/screen/register/page4_schedule_vidcall/schedule_vidcall_page.dart';
+import 'package:flutter_mini_register/screen/register/register_confirmation_page.dart';
 
 class Navigate {
   final BuildContext context;
@@ -41,6 +42,22 @@ class Navigate {
           goal: goal,
           income: income,
           expanse: expanse,
+        ),
+      ),
+    );
+  }
+
+  Future<dynamic> toRegisterConfirmationPage(String email, String password,
+      String goal, String income, String expanse, DateTime schedule) {
+    return Navigator.of(context).push(
+      CupertinoPageRoute(
+        builder: (context) => RegisterConfirmationPage(
+          email: email,
+          password: password,
+          goal: goal,
+          income: income,
+          expanse: expanse,
+          scheduleVidCall: schedule,
         ),
       ),
     );

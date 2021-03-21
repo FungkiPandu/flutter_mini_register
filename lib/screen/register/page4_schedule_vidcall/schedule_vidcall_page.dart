@@ -5,6 +5,7 @@ import 'package:flutter_mini_register/component/my_date_picker.dart';
 import 'package:flutter_mini_register/component/my_text.dart';
 import 'package:flutter_mini_register/component/my_time_picker.dart';
 import 'package:flutter_mini_register/component/template/register_stepper.dart';
+import 'package:flutter_mini_register/helper/datetime.dart';
 import 'package:flutter_mini_register/helper/navigation/navigate.dart';
 import 'package:flutter_mini_register/logic/register/schedule_vidcall.dart';
 
@@ -110,8 +111,8 @@ class _ScheduleVidCallPageState extends State<ScheduleVidCallPage>
             SizedBox(height: 8),
             MyText(
               "Choose the date and time that you preferred, we will send a "
-                  "link via email to make a video call on the scheduled date "
-                  "and time",
+              "link via email to make a video call on the scheduled date "
+              "and time",
               type: MyTextType.body,
               color: Colors.white,
             ),
@@ -159,6 +160,14 @@ class _ScheduleVidCallPageState extends State<ScheduleVidCallPage>
           _showErrorDialog("Please choose date and time more than now");
           return;
         }
+        Navigate(context).toRegisterConfirmationPage(
+          widget.email,
+          widget.password,
+          widget.goal,
+          widget.income,
+          widget.expanse,
+          DateTimeHelper.bindDateTime(_selectedDate!, _selectedTime!),
+        );
       },
     );
   }
