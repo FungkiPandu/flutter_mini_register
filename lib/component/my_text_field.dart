@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class MyTextField extends StatelessWidget {
+enum MyTextFieldType { outline, contained }
+
+class MyTextField extends StatefulWidget {
   final Key? formKey;
   final String? hintText;
   final IconData? prefixIcon;
@@ -11,6 +13,8 @@ class MyTextField extends StatelessWidget {
   final void Function(String)? onChanged;
   final bool autoValidate;
   final TextInputType? inputType;
+  final MyTextFieldType type;
+  final bool isPassword;
 
   const MyTextField({
     this.formKey,
@@ -22,28 +26,54 @@ class MyTextField extends StatelessWidget {
     this.onChanged,
     this.autoValidate = false,
     this.inputType,
+    this.type = MyTextFieldType.outline,
+    this.isPassword = false,
   });
+
+  @override
+  _MyTextFieldState createState() => _MyTextFieldState();
+}
+
+class _MyTextFieldState extends State<MyTextField> {
+  bool _obscure = true;
+
+  // Toggles the password show status
+  void _toggle() {
+    setState(() {
+      _obscure = !_obscure;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: formKey,
-      autovalidateMode: autoValidate
+      key: widget.formKey,
+      autovalidateMode: widget.autoValidate
           ? AutovalidateMode.onUserInteraction
           : AutovalidateMode.disabled,
       child: TextFormField(
-        controller: controller,
-        validator: validator,
-        onChanged: onChanged,
-        keyboardType: inputType,
+        controller: widget.controller,
+        validator: widget.validator,
+        onChanged: widget.onChanged,
+        keyboardType: widget.inputType,
         textInputAction: TextInputAction.done,
+        obscureText: widget.isPassword && _obscure,
         decoration: new InputDecoration(
-          prefixIcon: Icon(Icons.email_outlined),
+          prefixIcon:
+              widget.prefixIcon != null ? Icon(widget.prefixIcon) : null,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          hintText: hintText,
-          fillColor: fillColor,
+          hintText: widget.hintText,
+          fillColor: widget.fillColor,
+          filled: widget.type == MyTextFieldType.contained,
+          suffixIcon: widget.isPassword
+              ? IconButton(
+                  icon: Icon(
+                    _obscure ? Icons.visibility : Icons.visibility_off,
+                  ),
+                  onPressed: _toggle)
+              : null,
         ),
       ),
     );
