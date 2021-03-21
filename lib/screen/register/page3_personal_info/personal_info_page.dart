@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 
-class PersonalInfo extends StatefulWidget {
-  PersonalInfo({Key? key}) : super(key: key);
+class PersonalInfoPage extends StatefulWidget {
+  final String email;
+  final String password;
+
+  PersonalInfoPage({
+    Key? key,
+    required this.email,
+    required this.password,
+  }) : super(key: key);
 
   @override
-  _PersonalInfoState createState() => _PersonalInfoState();
+  _PersonalInfoPageState createState() => _PersonalInfoPageState();
 }
 
-class _PersonalInfoState extends State<PersonalInfo> {
+class _PersonalInfoPageState extends State<PersonalInfoPage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(appBar: AppBar());
   }
 }

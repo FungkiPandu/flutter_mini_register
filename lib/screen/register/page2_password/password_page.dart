@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mini_register/component/MyAlertDialog.dart';
 import 'package:flutter_mini_register/component/my_button.dart';
 import 'package:flutter_mini_register/component/my_text.dart';
 import 'package:flutter_mini_register/component/my_text_field.dart';
 import 'package:flutter_mini_register/component/template/register_stepper.dart';
+import 'package:flutter_mini_register/helper/navigation/navigate.dart';
 
 class PasswordPage extends StatefulWidget {
   final String email;
@@ -14,6 +16,7 @@ class PasswordPage extends StatefulWidget {
 }
 
 class _PasswordPageState extends State<PasswordPage> {
+  var _controller = TextEditingController();
   String _complexityStatus = "";
   Color _complexityStatusColor = Colors.red;
   int _complexityPoint = 0;
@@ -66,6 +69,7 @@ class _PasswordPageState extends State<PasswordPage> {
               type: MyTextFieldType.contained,
               isPassword: true,
               onChanged: _onTextChange,
+              controller: _controller,
             ),
             SizedBox(height: 24),
             _complexityInfo(),
@@ -82,7 +86,24 @@ class _PasswordPageState extends State<PasswordPage> {
       text: "Next",
       color: Theme.of(context).primaryColorDark,
       onPressed: () {
-        // todo validate input, if success move to next page
+        if (_complexityPoint < 3) {
+          showMyDialog(
+              context: context,
+              builder: (context) => MyAlertDialog(
+                    title: "Sorry",
+                    content: "Please create a Strong or more complex password.",
+                    actions: [
+                      MyAlertDialogButton(
+                        text: "OK",
+                        isDefaultAction: true,
+                        onPressed: Navigate(context).pop,
+                      )
+                    ],
+                  ));
+          return;
+        }
+        Navigate(context)
+            .toRegisterPage3PersonalInfo(widget.email, _controller.text);
       },
     );
   }
@@ -124,38 +145,38 @@ class _PasswordPageState extends State<PasswordPage> {
     return Column(
       children: [
         sym,
-        SizedBox(height: 4),
+        SizedBox(height: 6),
         MyText(label, type: MyTextType.body, color: Colors.white),
       ],
     );
   }
 
   Widget get _checkIcon => Container(
-        child: Icon(Icons.check, color: Colors.white, size: 20),
-        padding: EdgeInsets.all(4),
-        decoration: BoxDecoration(
-          color: Colors.green,
-          borderRadius: BorderRadius.circular(20),
-        ),
-      );
+    child: Icon(Icons.check, color: Colors.white, size: 20),
+    padding: EdgeInsets.all(4),
+    decoration: BoxDecoration(
+      color: Colors.green,
+      borderRadius: BorderRadius.circular(20),
+    ),
+  );
 
   void _calculateStatus() {
-    var status = "Very Weak";
+    var status = "";
     Color color = Colors.red;
     var point = 0;
-    if (_isLowerCase) point++; // weak
-    if (_isUpperCase) point++; // good
-    if (_isNumber) point++; // string
+    if (_isLowerCase) point++; // very weak
+    if (_isUpperCase) point++; // weak
+    if (_isNumber) point++; // strong
     if (_isCharacters) point++; // very strong
 
     switch (point) {
       case 1:
-        status = "Weak";
-        color = Colors.orange;
+        status = "Very Weak";
+        color = Colors.red;
         break;
       case 2:
-        status = "Good";
-        color = Colors.yellow;
+        status = "Weak";
+        color = Colors.orangeAccent;
         break;
       case 3:
         status = "Strong";
